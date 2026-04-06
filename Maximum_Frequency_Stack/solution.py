@@ -1,23 +1,35 @@
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
 class Stack:
     def __init__(self):
-        self._items = []
+        self.top_node = None
+        self._size = 0
 
     def is_empty(self):
-        return len(self._items) == 0
+        return self.top_node is None
 
     def push(self, item):
-        self._items.append(item)
+        new_node = Node(item)
+        new_node.next = self.top_node
+        self.top_node = new_node
+        self._size += 1
 
     def pop(self):
         if not self.is_empty():
-            return self._items.pop()
+            val = self.top_node.value
+            self.top_node = self.top_node.next
+            self._size -= 1
+            return val
 
     def peek(self):
         if not self.is_empty():
-            return self._items[-1]
+            return self.top_node.value
 
     def __len__(self):
-        return len(self._items)
+        return self._size
 
 
 class FreqStack(object):
@@ -49,7 +61,7 @@ class FreqStack(object):
         self.counts[number_to_remove] = self.counts[number_to_remove] - 1
         
         if target_stack.is_empty():
-            self.record_frequency = self.record_frequency - 1
+            self.record_frequency -= 1
             
         return number_to_remove
 
